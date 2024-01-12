@@ -3,6 +3,7 @@ import { GeneralContext } from "../../store/context";
 import { useFetch } from "../../shared/hooks";
 import { EmptyResults } from "../../shared/components";
 import { Link } from "react-router-dom";
+import { deleteMateria } from "../services";
 
 export const MateriasList = () => {
 
@@ -72,6 +73,11 @@ export const MateriasList = () => {
 
 const MateriaItem = ({ materiaData }) => {
     const { idMateria, name } = materiaData;
+
+    const onDelete = () => {
+        deleteMateria( idMateria );
+        window.location.reload();
+    }
     return (
         <>
             <tr className="border-bottom">
@@ -80,6 +86,9 @@ const MateriaItem = ({ materiaData }) => {
                 
                 <td>
                     <Link to={`/materias/${idMateria}`} className="btn btn-primary my-2">Ver mas</Link>
+                    <button onClick={ onDelete } className="btn btn-danger mx-2">
+                        <i className="bi bi-trash3-fill"></i>
+                    </button>
                 </td>
             </tr>
 

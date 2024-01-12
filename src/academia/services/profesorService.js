@@ -1,12 +1,6 @@
 
 
 
-
-export const getProfesores = () => {
-
-}
-
-
 export const postProfesor = async(body) => {
     const url = 'http://localhost:8080/api-academia/v1/profesores';
 
@@ -22,7 +16,25 @@ export const postProfesor = async(body) => {
     try{
         const resp = await fetch(url, options);
         const data = await resp.json();
+        console.log( data )
+        return data;
 
+    }catch( error ){
+        return { errorMessage: error.message }
+    }
+}
+
+
+
+export const deleteProfesor = async(id) => {
+    const url = `http://localhost:8080/api-academia/v1/profesores/${id}`;
+    const options = {
+        method: 'DELETE'
+    }
+
+    try{
+        const resp = await fetch(url, options);
+        const data = await resp.json();
         return data;
 
     }catch( error ){

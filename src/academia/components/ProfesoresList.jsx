@@ -3,6 +3,7 @@ import { useFetch } from "../../shared/hooks";
 import { GeneralContext } from "../../store/context";
 import { Link } from "react-router-dom";
 import { EmptyResults } from "../../shared/components";
+import { deleteProfesor } from "../services";
 
 
 export const ProfesoresList = () => {
@@ -64,9 +65,6 @@ export const ProfesoresList = () => {
                                     </tbody>
                                 </table>
                     }
-
-                    
-
                 
                 </div>
             </div>
@@ -78,6 +76,12 @@ export const ProfesoresList = () => {
 
 const ProfesorItem = ({ profesorData }) => {
     const { idProfesor, name, email } = profesorData;
+
+    const onDelete = () => {
+        deleteProfesor( idProfesor );
+        window.location.reload();
+    }
+
     return (
         <>
             <tr className="border-bottom">
@@ -86,7 +90,10 @@ const ProfesorItem = ({ profesorData }) => {
                 <td>{email}</td>
                 
                 <td>
-                    <Link to={`/profesores/${idProfesor}`} className="btn btn-primary my-2">Ver mas</Link>
+                    <Link to={`/profesores/${idProfesor}`} className="btn btn-primary my-2">Ver más</Link>
+                    <button onClick={ onDelete } className="btn btn-danger mx-2">
+                        <i className="bi bi-trash3-fill"></i>
+                    </button>
                 </td>
             </tr>
 

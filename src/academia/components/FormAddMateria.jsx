@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ModalContainer } from '/src/shared/components';
 import { GeneralContext } from '../../store/context';
 import { useForm } from '../../shared/hooks';
@@ -7,6 +7,7 @@ import { postMateria } from '../services';
 export const FormAddMateria = () => {
 
     const context = useContext( GeneralContext );
+    const [ errorsForm, setErrorsForm ] = useState([]);
 
     const formValidations = {
         name   : [ ( value ) => value.length >= 3, 'El nombre es obligatorio' ],
@@ -31,6 +32,7 @@ export const FormAddMateria = () => {
 
     const onCancel = () => {
         context.setOpenModal(false);
+        setErrorsForm([]);
         onResetForm();
     }
     
@@ -68,7 +70,6 @@ export const FormAddMateria = () => {
                 </div>
             </form>
         </ModalContainer>
-            
         
     );
 }

@@ -20,16 +20,28 @@ export const FormAddProfesor = () => {
         const addProfesor = await postProfesor({ ci, name, email });
 
         const { ok, errors } = addProfesor;
-
-        if( !ok ){
-            setErrorsForm( errors );
+        console.log( addProfesor )
+        if( !ok ) {
+            setErrorsForm( errors ); 
+            return;
         }
 
-        // context.setOpenModal(false);
+        context.setOpenModal(false);
+
+        window.location.reload();
+
+        context.setAlert({ 
+            open:true, 
+            message:'✅ Profesor agregado', 
+            type:'success' 
+        });
+
+        onResetForm();
     }
 
     const onCancel = () => {
         context.setOpenModal(false);
+        setErrorsForm([]);
         onResetForm();
     }
     
@@ -77,11 +89,15 @@ export const FormAddProfesor = () => {
                     />
                 </div>
 
-                <div className='alert alert-danger'>
-                    <ul>
-                        { errorsForm?.map( error => <li key={ error }>{ error }</li> ) }
-                    </ul>
-                </div>
+                {
+                    (errorsForm?.length > 0) &&
+                    <div className='alert alert-danger'>
+                        <ul>
+                            {  errorsForm?.map( error => <li key={ error }>{ error }</li> ) }
+                        </ul>
+                    </div>
+                }
+                
 
                 <div className="form-group d-flex justify-content-end">
                     <button 
