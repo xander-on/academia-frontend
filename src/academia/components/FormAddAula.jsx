@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ModalContainer }       from '/src/shared/components';
 import { GeneralContext }       from '../../store/context';
 import { useFetch, useForm }              from '../../shared/hooks';
+import { postAula } from '../services';
 
 
 export const FormAddAula = () => {
@@ -35,10 +36,19 @@ export const FormAddAula = () => {
     } = useForm(initialForm, formValidations );
 
     const onSubmit = async( event ) => {
+
+        const aulaToPost = { 
+            codigo,
+            date,
+            time, 
+            theme, 
+            materia:{ idMateria:materia }, 
+            profesor:{ idProfesor:profesor } 
+        }
         event.preventDefault();
-        // await postAula({ name });
-        console.log({ codigo, date, time, theme, materia, profesor });
-        // context.setOpenModal(false);
+        await postAula( aulaToPost );
+        console.log( aulaToPost );
+        context.setOpenModal(false);
         // window.location.reload();
 
         context.setAlert({ 
@@ -136,7 +146,7 @@ export const FormAddAula = () => {
                         value={materia}
                         onChange={ onInputChange }
                     >
-                        <option value="">Selecciona una materia</option>
+                        <option value="">--Selecciona una materia--</option>
                         { 
                             materias?.map( materia => 
                                 <option 
@@ -157,7 +167,7 @@ export const FormAddAula = () => {
                         value={profesor}
                         onChange={ onInputChange }
                     >
-                        <option value="">Selecciona un profesor</option>
+                        <option value="">--Selecciona un profesor--</option>
                         { 
                             profesores?.map( profesor => 
                                 <option 
