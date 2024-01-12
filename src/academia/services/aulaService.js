@@ -26,3 +26,20 @@ export const postAula = async ( body ) => {
         return { ok:false, errorMessage: error.message }
     }
 }
+
+
+export const deleteAula = async(id) => {
+    const url = `http://localhost:8080/api-academia/v1/aulas/${id}`;
+    const options = {
+        method: 'DELETE'
+    }
+
+    try{
+        const resp = await fetch(url, options);
+        const data = await resp.json();
+        return data;
+
+    }catch( error ){
+        return { errorMessage: error.message }
+    }
+}

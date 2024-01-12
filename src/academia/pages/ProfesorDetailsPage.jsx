@@ -32,17 +32,25 @@ export const ProfesorDetailsPage = () => {
 
 
 export const CardDetailsProfesor = ({ profesor }) => {
+
     return (
         <div className="card">
             <div className="card-header">
                 <h4>Detalles del Profesor</h4>
             </div>
             <div className="card-body">
-                <div><strong>ID:</strong> { profesor?.idProfesor }</div>
-                <br />
-                <div><strong>C.I:</strong> { profesor?.ci }</div>
-                <br />
-                <div><strong>Nombre:</strong> { profesor?.name }</div>
+                <div className="row">
+                    <div className="col-4">
+                        <img src={profesor?.photo} alt="" className="w-100"/>
+                    </div>
+                    <div className="col-8 d-flex flex-column justify-content-center px-5">
+                        <div><strong>ID:</strong> { profesor?.idProfesor }</div>
+                        <br />
+                        <div><strong>C.I:</strong> { profesor?.ci }</div>
+                        <br />
+                        <div><strong>Nombre:</strong> { profesor?.name }</div>
+                    </div>
+                </div>
             </div>
         </div>
     );

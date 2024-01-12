@@ -85,7 +85,7 @@ const MateriaItem = ({ materiaData }) => {
                 <td>{name}</td>
                 
                 <td>
-                    <Link to={`/materias/${idMateria}`} className="btn btn-primary my-2">Ver mas</Link>
+                    <Link to={`/materias/${idMateria}`} className="btn btn-primary my-2">Ver más</Link>
                     <button onClick={ onDelete } className="btn btn-danger mx-2">
                         <i className="bi bi-trash3-fill"></i>
                     </button>

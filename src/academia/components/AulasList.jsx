@@ -5,6 +5,7 @@ import { GeneralContext } from "../../store/context";
 import { useFetch }       from "../../shared/hooks";
 import { EmptyResults }   from "../../shared/components";
 import { Link } from "react-router-dom";
+import { deleteAula } from "../services";
 
 export const AulasList = () => {
 
@@ -77,6 +78,11 @@ export const AulasList = () => {
 
 const AulaItem = ({ aulaData }) => {
     const { idAula ,codigo, date, time, materia, profesor } = aulaData;
+
+    const onDelete = () => {
+        deleteAula( idAula );
+        // window.location.reload();
+    }
     return (
         <>
             <tr className="border-bottom">
@@ -87,7 +93,10 @@ const AulaItem = ({ aulaData }) => {
                 <td>{profesor?.name}</td>
                 
                 <td>
-                    <Link to={`/aulas/${idAula}`} className="btn btn-primary my-2">Ver mas</Link>
+                    <Link to={`/aulas/${idAula}`} className="btn btn-primary my-2">Ver más</Link>
+                    <button onClick={ onDelete } className="btn btn-danger mx-2">
+                        <i className="bi bi-trash3-fill"></i>
+                    </button>
                 </td>
             </tr>
 
