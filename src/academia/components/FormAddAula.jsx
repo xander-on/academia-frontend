@@ -49,7 +49,7 @@ export const FormAddAula = () => {
         await postAula( aulaToPost );
         console.log( aulaToPost );
         context.setOpenModal(false);
-        // window.location.reload();
+        window.location.reload();
 
         context.setAlert({ 
             open:true, 

@@ -41,7 +41,7 @@ export const AulasList = () => {
                     
                     {
                         (aulas?.length === 0)
-                            ? <EmptyResults message="No hay materias registradas"/>
+                            ? <EmptyResults message="No hay aulas registradas"/>
                             : <table className="col-12">
                                 <thead>
                                     <tr className="border-bottom">
