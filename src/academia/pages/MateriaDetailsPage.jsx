@@ -1,39 +1,19 @@
-import { Link, useParams } from "react-router-dom";
-import { useFetch } from "../../shared/hooks";
-import { GeneralLayout } from "../../shared/Layout";
-import { EmptyResults } from "../../shared/components";
-
+import { GeneralDetailsPage } from "./GeneralDetailsPage";
 
 
 export const MateriaDetailsPage = () => {
-
-    const { id }   = useParams();
-    // const navigate = useNavigate();
-    const { data } = useFetch(`http://localhost:8080/api-academia/v1/materias/${id}`);
-    const materia = data?.results[0];
-
     return (
-        <GeneralLayout>
-            <Link className="btn" to="/materias">
-                <i className="bi bi-arrow-left-short"></i>
-                Back to List
-            </Link>
-
-            <div className="col-8 offset-2">
-                { 
-                    ( data?.results.length === 0 ) 
-                        ? (<EmptyResults message="No se encontro un profesor con ese ID"/>)
-                        :  <CardDetailsMateria materia={materia}/>
-                }
-                
-            </div>
-        </GeneralLayout>
+        <GeneralDetailsPage 
+            url="http://localhost:8080/api-academia/v1/materias"
+        >
+            <MateriaDetailsCard />
+        </GeneralDetailsPage> 
     );
 }
 
 
 
-export const CardDetailsMateria = ({ materia }) => {
+export const MateriaDetailsCard = ({ info: materia }) => {
     return (
         <div className="card">
             <div className="card-header">

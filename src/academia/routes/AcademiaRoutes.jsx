@@ -6,7 +6,7 @@ import {
     ProfesorDetailsPage, 
     MateriaDetailsPage, 
     AulasPage,
-    AulaDetailsPage
+    AulaDetailsPage,
 } from "../pages";
 
 
