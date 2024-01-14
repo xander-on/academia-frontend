@@ -1,24 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { cloneElement, useContext } from "react";
 import { GeneralContext } from "../../store/context";
-import { useFetch } from "../../shared/hooks";
 import { EmptyResults } from "../../shared/components";
-import { Link } from "react-router-dom";
-import { deleteMateria } from "../services";
+import { Link }         from "react-router-dom";
 
-export const MateriasList = () => {
+export const GeneralList = ({ infoList, registros, children }) => {
 
-    const { data } = useFetch('http://localhost:8080/api-academia/v1/materias');
-    const [ materias, setMaterias ] = useState([]);
+    const { title, listHeaders } = infoList;
+    
     const context = useContext( GeneralContext );
-
-    useEffect(() => {
-        setMaterias( data?.results );
-    }, [data]);
-
-    const onOpenModal = () => {
-        context.setOpenModal( true );
-    }
-
+    const onOpenModal = () => context.setOpenModal( true );
+        
     return (
         <>
             <Link className="btn mb-3" to="/">
@@ -26,35 +17,38 @@ export const MateriasList = () => {
                 Back to Menu
             </Link>
 
+            { !registros && <p>Cargando...</p> }
+
             <div className="card">
                 <div className="card-header">
                     <div className="d-flex justify-content-between">
-                        <h4>Materias</h4>
-                        <button onClick={ onOpenModal } className="btn btn-success">Agregar</button>
+                        <h4>{ title }</h4>
+                        <button 
+                            onClick={ onOpenModal } 
+                            className="btn btn-success"
+                        >
+                            Agregar
+                        </button>
                     </div>
                 </div>
-
                 
-                <div className="card-body">
-                    
+                <div className="card-body"> 
                     {
-                        (materias?.length === 0)
+                        registros &&(registros?.length === 0)
                             ? <EmptyResults message="No hay materias registradas"/>
                             : <table className="col-12">
                                 <thead>
                                     <tr className="border-bottom">
-                                        <th>ID</th>
-                                        <th>Name</th>
+                                        {
+                                            listHeaders?.map( header => <th key={header}>{ header }</th>)
+                                        }
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        materias?.map( materia => 
-                                            <MateriaItem 
-                                                key={materia.idMateria} 
-                                                materiaData={materia}
-                                            />
+                                        registros?.map( (registro, index) => 
+                                            cloneElement( children, { key: index, info: registro, registro } ) 
                                         )
                                     }
                                 </tbody>
@@ -71,27 +65,3 @@ export const MateriasList = () => {
 
 
 
-const MateriaItem = ({ materiaData }) => {
-    const { idMateria, name } = materiaData;
-
-    const onDelete = () => {
-        deleteMateria( idMateria );
-        window.location.reload();
-    }
-    return (
-        <>
-            <tr className="border-bottom">
-                <td>{idMateria}</td>
-                <td>{name}</td>
-                
-                <td>
-                    <Link to={`/materias/${idMateria}`} className="btn btn-primary my-2">Ver más</Link>
-                    <button onClick={ onDelete } className="btn btn-danger mx-2">
-                        <i className="bi bi-trash3-fill"></i>
-                    </button>
-                </td>
-            </tr>
-
-        </>
-    );
-}
