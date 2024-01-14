@@ -10,7 +10,7 @@ export const GeneralDetailsPage = ({ url='', children }) => {
 
     const { id }   = useParams();
     const navigate = useNavigate();
-    const { data } = useFetch(`${url}/${id}`);
+    const { data, isLoading } = useFetch(`${url}/${id}`);
     const info = data?.results[0];
     
     const navigateBack = () => navigate(-1);
@@ -23,8 +23,11 @@ export const GeneralDetailsPage = ({ url='', children }) => {
             </Link>
 
             <div className="col-8 offset-2">
+
+                { isLoading && <div>Loading...</div> }
+
                 { 
-                    ( data?.results.length === 0 ) 
+                    !isLoading && ( data?.results.length === 0 ) 
                         ? (<EmptyResults message="No se encontro un profesor con ese ID"/>)
                         :  ( cloneElement( children,  { info } ) )
                 }

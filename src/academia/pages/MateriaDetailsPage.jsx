@@ -12,17 +12,29 @@ export const MateriaDetailsPage = () => {
 }
 
 
-
 export const MateriaDetailsCard = ({ info: materia }) => {
+
+    if( !materia ) return;
+    const { idMateria, name } = materia;
+
+    const fieldsCard = [
+        { label: 'ID', value: idMateria },
+        { label: 'Nombre', value: name },
+    ]
+        
     return (
         <div className="card">
             <div className="card-header">
                 <h4>Detalles de la materia</h4>
             </div>
             <div className="card-body">
-                <div><strong>ID:</strong> { materia?.idMateria }</div>
-                <br />
-                <div><strong>Nombre:</strong> { materia?.name }</div>
+                {
+                    fieldsCard.map( (field, index) => 
+                        <div key={index} className="mb-3">
+                            <strong>{field.label}:</strong> { field.value }
+                        </div>
+                    )
+                }
             </div>
         </div>
     );

@@ -14,6 +14,15 @@ export const ProfesorDetailsPage = () => {
 
 export const ProfesorDetailsCard = ({ info:profesor }) => {
 
+    if( !profesor ) return;
+    const { idProfesor, ci, name, photo } = profesor;
+
+    const fieldsCard = [
+        { label: 'ID',     value: idProfesor },
+        { label: 'C.I',    value: ci },
+        { label: 'Nombre', value: name },
+    ]
+
     return (
         <div className="card">
             <div className="card-header">
@@ -22,14 +31,16 @@ export const ProfesorDetailsCard = ({ info:profesor }) => {
             <div className="card-body">
                 <div className="row">
                     <div className="col-4">
-                        <img src={profesor?.photo} alt="" className="w-100"/>
+                        <img src={ photo } alt="" className="w-100"/>
                     </div>
                     <div className="col-8 d-flex flex-column justify-content-center px-5">
-                        <div><strong>ID:</strong> { profesor?.idProfesor }</div>
-                        <br />
-                        <div><strong>C.I:</strong> { profesor?.ci }</div>
-                        <br />
-                        <div><strong>Nombre:</strong> { profesor?.name }</div>
+                        {
+                            fieldsCard.map( (field, index) => 
+                                <div key={index}>
+                                    <strong>{field.label}:</strong> { field.value }
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>

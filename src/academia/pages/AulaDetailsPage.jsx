@@ -13,30 +13,32 @@ export const AulaDetailsPage = () => {
 
 export const AulaCardDetails = ({ info:aula }) => {
 
+    if( !aula ) return;
+    const { idAula, codigo, date, time, theme, materia, profesor } = aula;
+
+    const fieldsCard = [
+        { label: 'ID',        value: idAula },
+        { label: 'cod. Aula', value: codigo },
+        { label: 'Fecha',     value: date },
+        { label: 'Hora',      value: time },
+        { label: 'Tema',      value: theme },
+        { label: 'Materia',   value: materia?.name },
+        { label: 'Profesor',  value: profesor?.name },
+    ]
+
     return (
         <div className="card">
             <div className="card-header">
                 <h4>Detalles de la materia</h4>
             </div>
             <div className="card-body">
-                <div><strong>ID:</strong> { aula?.idAula }</div>
-                <br />
-                <div><strong>cod. Aula:</strong> { aula?.codigo }</div>
-
-                <br />
-                <div><strong>Fecha:</strong> { aula?.date }</div>
-
-                <br />
-                <div><strong>Hora:</strong> { aula?.time }</div>
-
-                <br />
-                <div><strong>Tema:</strong> { aula?.theme }</div>
-
-                <br />
-                <div><strong>Materia:</strong> { aula?.materia?.name }</div>
-
-                <br />
-                <div><strong>Profesor:</strong> { aula?.profesor?.name }</div>
+                {
+                    fieldsCard.map( (field, index) => 
+                        <div key={index} className="mb-3">
+                            <strong>{field.label}:</strong> { field.value }
+                        </div>
+                    )
+                }
             </div>
         </div>
     );
