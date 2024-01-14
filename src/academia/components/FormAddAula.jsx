@@ -1,9 +1,9 @@
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { ModalContainer }       from '/src/shared/components';
 import { GeneralContext }       from '../../store/context';
-import { useFetch, useForm }              from '../../shared/hooks';
-import { postAula } from '../services';
+import { useForm }              from '../../shared/hooks';
+import { postAula }             from '../services';
 
 
 export const FormAddAula = () => {
@@ -38,16 +38,12 @@ export const FormAddAula = () => {
     const onSubmit = async( event ) => {
 
         const aulaToPost = { 
-            codigo,
-            date,
-            time, 
-            theme, 
+            codigo, date, time, theme, 
             materia:{ idMateria:materia }, 
             profesor:{ idProfesor:profesor } 
         }
         event.preventDefault();
         await postAula( aulaToPost );
-        console.log( aulaToPost );
         context.setOpenModal(false);
         window.location.reload();
 
@@ -64,19 +60,6 @@ export const FormAddAula = () => {
         setErrorsForm([]);
         onResetForm();
     }
-
-    const { data:dataMaterias }   = useFetch('http://localhost:8080/api-academia/v1/materias');
-    const { data:dataProfesores } = useFetch('http://localhost:8080/api-academia/v1/profesores');
-    const [ materias, setMaterias ] = useState([]);
-    const [ profesores, setProfesores ] = useState([]);
-
-    useEffect(() => {
-        setMaterias( dataMaterias?.results );
-    }, [dataMaterias]);
-
-    useEffect(() => {
-        setProfesores( dataProfesores?.results );
-    }, [dataProfesores]);
 
     return (
         <ModalContainer 
@@ -148,7 +131,7 @@ export const FormAddAula = () => {
                     >
                         <option value="">--Selecciona una materia--</option>
                         { 
-                            materias?.map( materia => 
+                            context.materias?.map( materia => 
                                 <option 
                                     key={ materia.idMateria } 
                                     value={ materia.idMateria }>
@@ -169,7 +152,7 @@ export const FormAddAula = () => {
                     >
                         <option value="">--Selecciona un profesor--</option>
                         { 
-                            profesores?.map( profesor => 
+                            context.profesores?.map( profesor => 
                                 <option 
                                     key={ profesor.idProfesor } 
                                     value={ profesor.idProfesor }>

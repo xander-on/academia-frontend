@@ -1,12 +1,19 @@
-import { useContext }     from "react";
-import { Link }           from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { GeneralContext } from "../../store/context";
-import { EmptyResults }   from "../../shared/components";
-import { deleteMateria }  from "../services";
+import { useFetch } from "../../shared/hooks";
+import { EmptyResults } from "../../shared/components";
+import { Link } from "react-router-dom";
+import { deleteMateria } from "../services";
 
 export const MateriasList = () => {
 
+    const { data } = useFetch('http://localhost:8080/api-academia/v1/materias');
+    const [ materias, setMaterias ] = useState([]);
     const context = useContext( GeneralContext );
+
+    useEffect(() => {
+        setMaterias( data?.results );
+    }, [data]);
 
     const onOpenModal = () => {
         context.setOpenModal( true );
@@ -31,7 +38,7 @@ export const MateriasList = () => {
                 <div className="card-body">
                     
                     {
-                        (context.materias?.length === 0)
+                        (materias?.length === 0)
                             ? <EmptyResults message="No hay materias registradas"/>
                             : <table className="col-12">
                                 <thead>
@@ -43,7 +50,7 @@ export const MateriasList = () => {
                                 </thead>
                                 <tbody>
                                     {
-                                        context.materias?.map( materia => 
+                                        materias?.map( materia => 
                                             <MateriaItem 
                                                 key={materia.idMateria} 
                                                 materiaData={materia}

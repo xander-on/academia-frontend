@@ -11,7 +11,6 @@ export const ProfesorDetailsPage = () => {
 }
 
 
-
 export const ProfesorDetailsCard = ({ info:profesor }) => {
 
     if( !profesor ) return;

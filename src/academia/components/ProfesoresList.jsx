@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { useFetch } from "../../shared/hooks";
+import { useContext } from "react";
 import { GeneralContext } from "../../store/context";
 import { Link } from "react-router-dom";
 import { EmptyResults } from "../../shared/components";
@@ -8,19 +7,9 @@ import { deleteProfesor } from "../services";
 
 export const ProfesoresList = () => {
     
-    const { data } = useFetch('http://localhost:8080/api-academia/v1/profesores');
-    const [ profesores, setProfesores ] = useState([]);
-
-    useEffect(() => {
-        setProfesores( data?.results );
-    }, [data]);
-
     const context = useContext( GeneralContext );
 
-    const onOpenModal = () => {
-        context.setOpenModal( true );
-    }
-
+    const onOpenModal = () => context.setOpenModal( true );
 
     return (
 
@@ -42,7 +31,7 @@ export const ProfesoresList = () => {
                 <div className="card-body">
 
                     {
-                        (profesores?.length === 0)
+                        ( context.profesores?.length === 0)
                             ? <EmptyResults message="No hay materias registradas"/>
                             :   <table className="col-12">
                                     <thead>
@@ -55,7 +44,7 @@ export const ProfesoresList = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            profesores?.map( profesor => 
+                                            context.profesores?.map( profesor => 
                                                 <ProfesorItem 
                                                     key={profesor.idProfesor} 
                                                     profesorData={profesor}
