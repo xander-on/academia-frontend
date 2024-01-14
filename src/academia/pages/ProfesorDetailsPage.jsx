@@ -30,12 +30,12 @@ export const ProfesorDetailsCard = ({ info:profesor }) => {
             <div className="card-body">
                 <div className="row">
                     <div className="col-4">
-                        <img src={ photo } alt="" className="w-100"/>
+                        <img src={ photo? photo : '/src/assets/images/no-avatar.png' } alt="" className="w-100"/>
                     </div>
                     <div className="col-8 d-flex flex-column justify-content-center px-5">
                         {
                             fieldsCard.map( (field, index) => 
-                                <div key={index}>
+                                <div key={index} className="mb-3">
                                     <strong>{field.label}:</strong> { field.value }
                                 </div>
                             )
