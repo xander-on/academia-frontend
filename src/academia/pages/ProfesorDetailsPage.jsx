@@ -1,3 +1,4 @@
+import { profesorMapper } from "../mappers";
 import { GeneralDetailsPage } from "./GeneralDetailsPage";
 
 export const ProfesorDetailsPage = () => {
@@ -14,11 +15,11 @@ export const ProfesorDetailsPage = () => {
 export const ProfesorDetailsCard = ({ info:profesor }) => {
 
     if( !profesor ) return;
-    const { idProfesor, ci, name, photo } = profesor;
+    const { id, dni, name, photo } = profesorMapper(profesor);
 
     const fieldsCard = [
-        { label: 'ID',     value: idProfesor },
-        { label: 'C.I',    value: ci },
+        { label: 'ID',     value: id },
+        { label: 'C.I',    value: dni },
         { label: 'Nombre', value: name },
     ]
 

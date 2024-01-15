@@ -31,20 +31,20 @@ export const MateriasPage = () => {
 
 const MateriaItem = ({ registro }) => {
     
-    const { idMateria, name } = registro;
+    const { id, name } = registro;
 
     const onDelete = () => {
-        deleteMateria( idMateria );
+        deleteMateria( id );
         window.location.reload();
     }
     return (
         <>
             <tr className="border-bottom">
-                <td>{idMateria}</td>
+                <td>{id}</td>
                 <td>{name}</td>
                 
                 <td>
-                    <Link to={`/materias/${idMateria}`} className="btn btn-primary my-2">Ver más</Link>
+                    <Link to={`/materias/${id}`} className="btn btn-primary my-2">Ver más</Link>
                     <button onClick={ onDelete } className="btn btn-danger mx-2">
                         <i className="bi bi-trash3-fill"></i>
                     </button>

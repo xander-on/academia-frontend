@@ -1,3 +1,4 @@
+import { aulaMapper } from "../mappers";
 import { GeneralDetailsPage } from "./";
 
 export const AulaDetailsPage = () => {
@@ -14,16 +15,17 @@ export const AulaDetailsPage = () => {
 export const AulaCardDetails = ({ info:aula }) => {
 
     if( !aula ) return;
-    const { idAula, codigo, date, time, theme, materia, profesor } = aula;
+
+    const { id, code, date, time, theme, course, teacher } = aulaMapper(aula);
 
     const fieldsCard = [
-        { label: 'ID',        value: idAula },
-        { label: 'cod. Aula', value: codigo },
+        { label: 'ID',        value: id },
+        { label: 'cod. Aula', value: code },
         { label: 'Fecha',     value: date },
         { label: 'Hora',      value: time },
         { label: 'Tema',      value: theme },
-        { label: 'Materia',   value: materia?.name },
-        { label: 'Profesor',  value: profesor?.name },
+        { label: 'Materia',   value: course?.name },
+        { label: 'Profesor',  value: teacher?.name },
     ]
 
     return (

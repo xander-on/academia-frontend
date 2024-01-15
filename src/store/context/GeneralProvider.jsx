@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { GeneralContext } from "./GeneralContext";
 import { useFetch } from "../../shared/hooks";
+import { aulaMapper, materiaMapper, profesorMapper } from "../../academia/mappers";
 
 
 export const GeneralProvider = ({ children }) => {
@@ -13,7 +14,8 @@ export const GeneralProvider = ({ children }) => {
     const [ materias, setMaterias ] = useState([]);
 
     useEffect(() => {
-        setMaterias( dataMaterias?.results );
+        const materiasMapped = dataMaterias?.results.map(materiaMapper);
+        setMaterias( materiasMapped );
     }, [dataMaterias]);
 
 
@@ -22,7 +24,8 @@ export const GeneralProvider = ({ children }) => {
     const [ profesores, setProfesores ] = useState([]);
 
     useEffect(() => {
-        setProfesores( dataProfesores?.results );
+        const profesoresMapped = dataProfesores?.results.map(profesorMapper);
+        setProfesores( profesoresMapped );
     }, [dataProfesores]);
 
 
@@ -31,7 +34,8 @@ export const GeneralProvider = ({ children }) => {
     const [ aulas, setAulas ] = useState([]);
 
     useEffect(() => {
-        setAulas( dataAulas?.results );
+        const dataAulasMapped = dataAulas?.results.map(aulaMapper);
+        setAulas( dataAulasMapped );
     }, [dataAulas]);
     
     return (

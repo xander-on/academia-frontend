@@ -1,3 +1,4 @@
+import { materiaMapper } from "../mappers";
 import { GeneralDetailsPage } from "./GeneralDetailsPage";
 
 
@@ -15,12 +16,12 @@ export const MateriaDetailsPage = () => {
 export const MateriaDetailsCard = ({ info: materia }) => {
 
     if( !materia ) return;
-    const { idMateria, name } = materia;
+    const { id, name } = materiaMapper( materia );
 
     const fieldsCard = [
-        { label: 'ID', value: idMateria },
+        { label: 'ID',     value: id },
         { label: 'Nombre', value: name },
-    ]
+    ];
         
     return (
         <div className="card">

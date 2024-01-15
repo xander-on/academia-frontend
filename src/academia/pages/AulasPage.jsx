@@ -28,23 +28,23 @@ export const AulasPage = () => {
 
 
 const AulaItem = ({ registro }) => {
-    const { idAula ,codigo, date, time, materia, profesor } = registro;
+    const { id, code, date, time, course, teacher } = registro;
 
     const onDelete = () => {
-        deleteAula( idAula );
+        deleteAula( id );
         window.location.reload();
     }
     return (
         <>
             <tr className="border-bottom">
-                <td>{codigo}</td>
+                <td>{code}</td>
                 <td>{date}</td>
                 <td>{time}</td>
-                <td>{materia?.name}</td>
-                <td>{profesor?.name}</td>
+                <td>{course?.name}</td>
+                <td>{teacher?.name}</td>
                 
                 <td>
-                    <Link to={`/aulas/${idAula}`} className="btn btn-primary my-2">Ver más</Link>
+                    <Link to={`/aulas/${id}`} className="btn btn-primary my-2">Ver más</Link>
                     <button onClick={ onDelete } className="btn btn-danger mx-2">
                         <i className="bi bi-trash3-fill"></i>
                     </button>

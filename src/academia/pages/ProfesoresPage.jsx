@@ -32,28 +32,26 @@ export const ProfesoresPage = () => {
 
 
 const ProfesorItem = ({ registro }) => {
-    const { idProfesor, name, email } = registro;
+
+    const { id, name, email } = registro;
 
     const onDelete = () => {
-        deleteProfesor( idProfesor );
+        deleteProfesor( id );
         window.location.reload();
     }
 
     return (
-        <>
-            <tr className="border-bottom">
-                <td>{idProfesor}</td>
-                <td>{name}</td>
-                <td>{email}</td>
-                
-                <td>
-                    <Link to={`/profesores/${idProfesor}`} className="btn btn-primary my-2">Ver más</Link>
-                    <button onClick={ onDelete } className="btn btn-danger mx-2">
-                        <i className="bi bi-trash3-fill"></i>
-                    </button>
-                </td>
-            </tr>
-
-        </>
+        <tr className="border-bottom">
+            <td>{id}</td>
+            <td>{name}</td>
+            <td>{email}</td>
+            
+            <td>
+                <Link to={`/profesores/${id}`} className="btn btn-primary my-2">Ver más</Link>
+                <button onClick={ onDelete } className="btn btn-danger mx-2">
+                    <i className="bi bi-trash3-fill"></i>
+                </button>
+            </td>
+        </tr>
     );
 }

@@ -42,6 +42,7 @@ export const FormAddAula = () => {
             materia:{ idMateria:materia }, 
             profesor:{ idProfesor:profesor } 
         }
+
         event.preventDefault();
         await postAula( aulaToPost );
         context.setOpenModal(false);
@@ -133,8 +134,8 @@ export const FormAddAula = () => {
                         { 
                             context.materias?.map( materia => 
                                 <option 
-                                    key={ materia.idMateria } 
-                                    value={ materia.idMateria }>
+                                    key={ materia.id } 
+                                    value={ materia.id }>
                                         { materia.name }
                                 </option>)
                         }
@@ -154,10 +155,12 @@ export const FormAddAula = () => {
                         { 
                             context.profesores?.map( profesor => 
                                 <option 
-                                    key={ profesor.idProfesor } 
-                                    value={ profesor.idProfesor }>
+                                    key={ profesor.id } 
+                                    value={ profesor.id }
+                                >
                                         { profesor.name }
-                                </option>)
+                                </option>
+                            )
                         }
                     </select>
                 </div>
