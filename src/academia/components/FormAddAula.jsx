@@ -3,8 +3,9 @@ import { useContext, useState } from 'react';
 import { ModalContainer }       from '/src/shared/components';
 import { GeneralContext }       from '../../store/context';
 import { useForm }              from '../../shared/hooks';
-import { postAula, registerPost }             from '../services';
-import { urlsAPI } from '../../config';
+import { registerPost } from '../services';
+import { urlsAPI } from '/src/config';
+import { InputForm } from './';
 
 
 export const FormAddAula = () => {
@@ -79,58 +80,57 @@ export const FormAddAula = () => {
             title     = {'Agregar aula'}
         >
             <form onSubmit={ onSubmit }>
-                <div className='form-group mb-3'>
-                    <label htmlFor="">Codigo: </label>
-                    <input 
-                        className="form-control" 
-                        type="text" 
-                        placeholder="Codigo"
-                        name='codigo'
-                        value   ={ codigo }
-                        onChange={ onInputChange }
+
+                <InputForm 
+                    dataInput = {{
+                        label: 'Cod. Aula',
+                        placeholder: 'Codigo', 
+                        name: 'codigo', 
+                        value: codigo,
+                        required: true,
+                        onInputChange: onInputChange 
+                    }}
+                />
+
+                <div className='row'>
+                    <InputForm 
+                        dataInput = {{
+                            small:true,
+                            type: 'date',
+                            label: 'Fecha',
+                            // placeholder: 'xx/xx/xxxx', 
+                            name: 'date', 
+                            value: date,
+                            // pattern="\d{4}-\d{2}-\d{2}",
+                            required: true,
+                            onInputChange: onInputChange
+                        }}
                     />
-                </div>
 
-                <div className='form-group mb-3 row'>
 
-                    <div className='col-6'>
-                        <label htmlFor="">Fecha: </label>
-                        <input 
-                            className="form-control" 
-                            type="date" 
-                            placeholder="Fecha"
-                            name='date'
-                            pattern="\d{4}-\d{2}-\d{2}"
-                            value   ={ date }
-                            onChange={ onInputChange }
-                        />
-                    </div>
-                    
-
-                    <div className='col-6'>
-                        <label htmlFor="">Hora: </label>
-                        <input 
-                            className="form-control" 
-                            type="time" 
-                            placeholder="Hora"
-                            name='time'
-                            value   ={ time }
-                            onChange={ onInputChange }
-                        />
-                    </div>
-                </div>
-
-                <div className='form-group mb-3'>
-                    <label htmlFor="">Tema: </label>
-                    <input 
-                        className="form-control" 
-                        type="text" 
-                        placeholder="Tema"
-                        name='theme'
-                        value   ={ theme }
-                        onChange={ onInputChange }
+                    <InputForm 
+                        dataInput = {{
+                            small:true,
+                            type: 'time',
+                            label: 'Hora:',
+                            name: 'time', 
+                            value: time,
+                            required: true,
+                            onInputChange: onInputChange
+                        }}
                     />
+
                 </div>
+                
+                <InputForm 
+                    dataInput = {{
+                        label: 'Tema:',
+                        placeholder: 'Tema', 
+                        name: 'theme', 
+                        value: theme,
+                        onInputChange: onInputChange
+                    }}
+                />
 
                 <div className="form-group mb-3">
                     <label htmlFor="">Materia: </label>
@@ -141,7 +141,7 @@ export const FormAddAula = () => {
                         value={materia}
                         onChange={ onInputChange }
                     >
-                        <option value="">--Selecciona una materia--</option>
+                        <option disabled value="">--Selecciona una materia--</option>
                         { 
                             context.materias?.map( materia => 
                                 <option 
