@@ -12,11 +12,11 @@ export const FormAddAula = () => {
     const context = useContext( GeneralContext );
     const [ errorsForm, setErrorsForm ] = useState([]);
 
-    const formValidations = {
+    const formValidators = {
         codigo   : [ ( value ) => value.length >0, 'El codigo es obligatorio' ],
         date     : [ ( value ) => value.length >0, 'La fecha es obligatorio' ],
         time     : [ ( value ) => value.length >0, 'La hora es obligatorio' ],
-        theme    : [ ( value ) => value.length >0, 'El tema es obligatorio' ],
+        // theme    : [ ( value ) => value.length >0, 'El tema es obligatorio' ],
         materia  : [ ( value ) => value != '',     'La materia es obligatorio' ],
         profesor : [ ( value ) => value != '',     'El profesor es obligatorio' ],
     }
@@ -34,11 +34,15 @@ export const FormAddAula = () => {
         codigo, date, time, theme, materia, profesor,
         onInputChange, 
         onResetForm, 
+        formErrors,
         isFormValid
-    } = useForm(initialForm, formValidations );
+    } = useForm(initialForm, formValidators );
 
     const onSubmit = async( event ) => {
+        
         event.preventDefault();
+        console.log(formErrors);
+        if( !isFormValid ) return;
 
         const aulaToPost = { 
             codigo, date, time, theme, 
@@ -88,7 +92,8 @@ export const FormAddAula = () => {
                         name: 'codigo', 
                         value: codigo,
                         required: true,
-                        onInputChange: onInputChange 
+                        onInputChange: onInputChange, 
+                        errorMessage:formErrors.codigo
                     }}
                 />
 
@@ -103,7 +108,8 @@ export const FormAddAula = () => {
                             value: date,
                             // pattern="\d{4}-\d{2}-\d{2}",
                             required: true,
-                            onInputChange: onInputChange
+                            onInputChange: onInputChange,
+                            errorMessage:formErrors.date
                         }}
                     />
 
@@ -116,7 +122,8 @@ export const FormAddAula = () => {
                             name: 'time', 
                             value: time,
                             required: true,
-                            onInputChange: onInputChange
+                            onInputChange: onInputChange,
+                            errorMessage:formErrors.time
                         }}
                     />
 

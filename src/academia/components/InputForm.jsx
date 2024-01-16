@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 
 
@@ -11,8 +12,16 @@ export const InputForm = ({ dataInput }) => {
         name = '', 
         value = '', 
         required=false,
-        onInputChange 
+        onInputChange,
+        errorMessage = null 
     } = dataInput;
+
+    const [isDirty, setIsDirty] = useState(false);
+
+    const handleInputChange = (e) => {
+        setIsDirty(true); // Marca el campo como "dirty"
+        onInputChange(e); // Pasa el evento al controlador de cambio externo si es necesario
+      };
 
     return (
         <div className={`form-group mb-3 ${small ? 'col-6' : 'col-12'}`}>
@@ -22,12 +31,18 @@ export const InputForm = ({ dataInput }) => {
             </label>
             <input 
                 className="form-control" 
-                type={ type } 
+                type     ={ type } 
                 placeholder={ placeholder }
-                name={ name }
+                name    ={ name }
                 value   ={ value }
-                onChange={ onInputChange }
+                onChange={ handleInputChange }
             />
+            {   
+                isDirty && errorMessage && 
+                <small className="text-danger mx-2">
+                    { errorMessage}
+                </small>
+            }
         </div>
     )
 }

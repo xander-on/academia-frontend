@@ -1,22 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 
-export const useForm = ( initialForm = {}, formValidations = {} ) => {
+export const useForm = ( initialForm = {}, formValidators = {} ) => {
 
     const [formState, setFormState] = useState(initialForm);
-    const [ formValidation, setFormValidation ] = useState({});
+    const [ formErrors, setFormErrors ] = useState({});
 
     useEffect(() => {
-        createValidators();    
+        checkErrors();  
+        console.log( formErrors );  
     },[ formState ]);
 
 
     const isFormValid = useMemo(() => {
-        for ( const formValue of Object.keys( formValidation )) {
-            if ( formValidation[formValue] !== null ) return false;
+        for ( const formValue of Object.keys( formErrors )) {
+            if ( formErrors[formValue] !== null ) return false;
         }
         
         return true;
-    },[formValidation]);
+    },[formErrors]);
 
 
     const onInputChange = ({ target }) => {
@@ -32,17 +33,17 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
         setFormState(initialForm);
     }
 
-    const createValidators = () => {
-        const formCheckedValues = {};
+    const checkErrors = () => {
+        const formErrors = {};
 
-        for (const formField of Object.keys( formValidations )) {
-            const [ fn, errorMessage='Error en este campo' ] = formValidations[ formField ];
+        for (const formField of Object.keys( formValidators )) {
+            const [ fn, errorMessage='Error en este campo' ] = formValidators[ formField ];
 
-            formCheckedValues[`${ formField }Valid`] = 
+            formErrors[`${ formField }`] = 
                 fn( formState[ formField ] ) ? null : errorMessage;
         }
 
-        setFormValidation( formCheckedValues );
+        setFormErrors( formErrors );
     }
 
     return{
@@ -51,7 +52,7 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
         onInputChange,
         onResetForm,
 
-        ...formValidation,
+        formErrors,
         isFormValid
     }
 }
