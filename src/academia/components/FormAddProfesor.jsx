@@ -2,7 +2,8 @@ import { useContext, useState } from 'react';
 import { ModalContainer } from '/src/shared/components';
 import { GeneralContext } from '../../store/context';
 import { useForm } from '../../shared/hooks';
-import { postProfesor } from '../services';
+import { registerPost } from '../services';
+import { urlsAPI } from "/src/config/urlsAPI";
 
 export const FormAddProfesor = () => {
 
@@ -10,33 +11,36 @@ export const FormAddProfesor = () => {
     const [ errorsForm, setErrorsForm ] = useState([]);
 
     const { ci, name, email, onInputChange, onResetForm } = useForm({
-        ci:'', 
+        ci    :'', 
         name  : '',
         email : '',
     });
 
     const onSubmit = async( event ) => {
         event.preventDefault();
-        const addProfesor = await postProfesor({ ci, name, email });
+        const responsePostProfesor = await registerPost(
+            urlsAPI.postProfesores, 
+            { ci, name, email }
+        );
 
-        const { ok, errors } = addProfesor;
-        console.log( addProfesor )
+        const { ok, errors } = responsePostProfesor;
+        console.log( responsePostProfesor );
+
         if( !ok ) {
             setErrorsForm( errors ); 
             return;
         }
-
+        
         context.setOpenModal(false);
-
-        window.location.reload();
+        onResetForm();
 
         context.setAlert({ 
             open:true, 
             message:'✅ Profesor agregado', 
             type:'success' 
         });
-
-        onResetForm();
+        
+        window.location.reload();
     }
 
     const onCancel = () => {

@@ -18,11 +18,11 @@ export const profesorMapper = ( profesor ) =>{
     if ( !profesor ) return;
     
     const profesorMapped = {
-        id  : profesor.idProfesor,
-        dni: profesor.ci,
-        name: profesor.name,
-        email: profesor.email,
-        photo: profesor.photo
+        id    : profesor.idProfesor,
+        dni   : profesor.ci,
+        name  : profesor.name,
+        email : profesor.email,
+        photo : profesor.photo
     }
 
     return profesorMapped;

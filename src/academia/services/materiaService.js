@@ -1,5 +1,6 @@
 
 export const postMateria = async (body) => {
+    console.log(body);
 
     const url = 'http://localhost:8080/api-academia/v1/materias';
 

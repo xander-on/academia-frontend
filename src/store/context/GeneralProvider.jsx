@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { GeneralContext } from "./GeneralContext";
 import { useFetch } from "../../shared/hooks";
 import { aulaMapper, materiaMapper, profesorMapper } from "../../academia/mappers";
-
+import { urlsAPI } from "/src/config/urlsAPI";
 
 export const GeneralProvider = ({ children }) => {
 
     const [ openModal, setOpenModal ] = useState(false);
     const [ alert, setAlert ] = useState({ open:false, message: '', type:'primary' });
 
+
     //cargar data materias backend
-    const { data:dataMaterias } = useFetch('http://localhost:8080/api-academia/v1/materias');
+    const { data:dataMaterias } = useFetch(urlsAPI.getMaterias);
     const [ materias, setMaterias ] = useState([]);
 
     useEffect(() => {
@@ -20,7 +21,7 @@ export const GeneralProvider = ({ children }) => {
 
 
     //cargar data profesores backend
-    const { data:dataProfesores } = useFetch('http://localhost:8080/api-academia/v1/profesores');
+    const { data:dataProfesores } = useFetch(urlsAPI.getProfesores);
     const [ profesores, setProfesores ] = useState([]);
 
     useEffect(() => {
@@ -30,13 +31,14 @@ export const GeneralProvider = ({ children }) => {
 
 
     //cargar data aulas backend
-    const { data:dataAulas } = useFetch('http://localhost:8080/api-academia/v1/aulas');
+    const { data:dataAulas } = useFetch(urlsAPI.getAulas);
     const [ aulas, setAulas ] = useState([]);
 
     useEffect(() => {
         const dataAulasMapped = dataAulas?.results.map(aulaMapper);
         setAulas( dataAulasMapped );
     }, [dataAulas]);
+
     
     return (
         <GeneralContext.Provider value={{
@@ -44,7 +46,8 @@ export const GeneralProvider = ({ children }) => {
             alert, setAlert,
             materias, setMaterias,
             profesores, setProfesores,
-            aulas, setAulas
+            aulas, setAulas,
+            urlsAPI
         }}>
             { children }
         </GeneralContext.Provider>

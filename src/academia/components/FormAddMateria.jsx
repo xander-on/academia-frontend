@@ -2,7 +2,9 @@ import { useContext, useState } from 'react';
 import { ModalContainer } from '/src/shared/components';
 import { GeneralContext } from '../../store/context';
 import { useForm } from '../../shared/hooks';
-import { postMateria } from '../services';
+import { registerPost } from '../services';
+import { urlsAPI } from "/src/config/urlsAPI";
+
 
 export const FormAddMateria = () => {
 
@@ -17,17 +19,18 @@ export const FormAddMateria = () => {
 
     const onSubmit = async( event ) => {
         event.preventDefault();
-        await postMateria({ name });
+        await registerPost(urlsAPI.postMaterias, { name });
 
         context.setOpenModal(false);
-        window.location.reload();
+        onResetForm();
 
         context.setAlert({ 
             open:true, 
             message:'✅ Materia agregada', 
             type:'success' 
         });
-        onResetForm();
+
+        window.location.reload();
     }
 
     const onCancel = () => {

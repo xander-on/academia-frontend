@@ -9,7 +9,7 @@ export const AulasPage = () => {
 
     const context = useContext( GeneralContext );
     const infoList = { 
-        title: 'Profesores', 
+        title: 'Materias', 
         listHeaders: ["Cod. Aula", "Fecha", "Hora", "Materia", "Profesor"] 
     }
 

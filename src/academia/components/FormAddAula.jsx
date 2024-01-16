@@ -3,7 +3,8 @@ import { useContext, useState } from 'react';
 import { ModalContainer }       from '/src/shared/components';
 import { GeneralContext }       from '../../store/context';
 import { useForm }              from '../../shared/hooks';
-import { postAula }             from '../services';
+import { postAula, registerPost }             from '../services';
+import { urlsAPI } from '../../config';
 
 
 export const FormAddAula = () => {
@@ -36,6 +37,7 @@ export const FormAddAula = () => {
     } = useForm(initialForm, formValidations );
 
     const onSubmit = async( event ) => {
+        event.preventDefault();
 
         const aulaToPost = { 
             codigo, date, time, theme, 
@@ -43,17 +45,26 @@ export const FormAddAula = () => {
             profesor:{ idProfesor:profesor } 
         }
 
-        event.preventDefault();
-        await postAula( aulaToPost );
+        const responsePostAula = await registerPost( urlsAPI.postAulas, aulaToPost );
+
+        const { ok, errors } = responsePostAula;
+        console.log( responsePostAula );
+
+        if( !ok ) {
+            setErrorsForm( errors ); 
+            return;
+        }
+        
         context.setOpenModal(false);
-        window.location.reload();
+        onResetForm();
 
         context.setAlert({ 
             open:true, 
             message:'✅ Aula agregada', 
             type:'success' 
         });
-        // onResetForm();
+
+        window.location.reload();
     }
 
     const onCancel = () => {
@@ -173,7 +184,7 @@ export const FormAddAula = () => {
                     >Cancelar</button>
 
                     <button 
-                        disabled={ !isFormValid }
+                        // disabled={ !isFormValid }
                         className="btn btn-success" 
                         type='submit'
                     >Guardar</button>
