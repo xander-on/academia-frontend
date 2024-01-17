@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 
 
 export const InputForm = ({ dataInput }) => {
@@ -17,11 +16,27 @@ export const InputForm = ({ dataInput }) => {
     } = dataInput;
 
     const [isDirty, setIsDirty] = useState(false);
+    const [ errors, setErrors ] = useState([]);
+
+
+    useEffect(() => {
+        (errorMessage && (required && !value)) 
+            ?setErrors(["Este campo es requerido", errorMessage])
+            : (required && !value) 
+                ? setErrors(["Este campo es requerido"]) 
+                : errorMessage 
+                    ? setErrors([ errorMessage ])
+                    : setErrors([]);
+
+      }, [required, value, errorMessage]);
 
     const handleInputChange = (e) => {
-        setIsDirty(true); // Marca el campo como "dirty"
-        onInputChange(e); // Pasa el evento al controlador de cambio externo si es necesario
-      };
+        onInputChange(e); 
+
+        setTimeout(() => {
+            setIsDirty(true); 
+        }, 500);
+    };
 
     return (
         <div className={`form-group mb-3 ${small ? 'col-6' : 'col-12'}`}>
@@ -38,10 +53,17 @@ export const InputForm = ({ dataInput }) => {
                 onChange={ handleInputChange }
             />
             {   
-                isDirty && errorMessage && 
-                <small className="text-danger mx-2">
-                    { errorMessage}
-                </small>
+                isDirty && errors && 
+                <div>
+                    {
+                        errors.map( (error, index) =>
+                            <small 
+                                className="text-danger mx-2 d-block" 
+                                key={index}
+                            >{ error }</small> 
+                        )
+                    }
+                </div>
             }
         </div>
     )

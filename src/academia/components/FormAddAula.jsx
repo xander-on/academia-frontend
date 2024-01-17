@@ -12,11 +12,9 @@ export const FormAddAula = () => {
     const context = useContext( GeneralContext );
     const [ errorsForm, setErrorsForm ] = useState([]);
 
+    // si el campo es requerido enviar el prop required en el input
     const formValidators = {
-        codigo   : [ ( value ) => value.length >0, 'El codigo es obligatorio' ],
-        date     : [ ( value ) => value.length >0, 'La fecha es obligatorio' ],
-        time     : [ ( value ) => value.length >0, 'La hora es obligatorio' ],
-        // theme    : [ ( value ) => value.length >0, 'El tema es obligatorio' ],
+        codigo   : [ ( value ) => value.length >3, 'El codigo debe tener al menos 4 caracteres' ],
         materia  : [ ( value ) => value != '',     'La materia es obligatorio' ],
         profesor : [ ( value ) => value != '',     'El profesor es obligatorio' ],
     }

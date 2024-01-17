@@ -7,7 +7,6 @@ export const useForm = ( initialForm = {}, formValidators = {} ) => {
 
     useEffect(() => {
         checkErrors();  
-        console.log( formErrors );  
     },[ formState ]);
 
 
