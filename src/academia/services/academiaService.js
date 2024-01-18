@@ -3,9 +3,6 @@
 
 export const registerPost = async ( url, body ) => {
 
-    console.log(body);
-    console.log(url)
-
     const options = {
         method: 'POST',
         headers: {
@@ -19,7 +16,6 @@ export const registerPost = async ( url, body ) => {
         const data = await resp.json();
 
         const { ok, errors, results } = data; 
-        // console.log( errors )
         
         return {
             ok      : ok,

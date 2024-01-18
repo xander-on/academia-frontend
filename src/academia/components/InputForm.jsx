@@ -21,7 +21,7 @@ export const InputForm = ({ dataInput }) => {
 
     useEffect(() => {
         (errorMessage && (required && !value)) 
-            ?setErrors(["Este campo es requerido", errorMessage])
+            ?setErrors(["Este campo es requerido"])
             : (required && !value) 
                 ? setErrors(["Este campo es requerido"]) 
                 : errorMessage 

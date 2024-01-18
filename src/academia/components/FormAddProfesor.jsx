@@ -1,51 +1,66 @@
-import { useContext, useState } from 'react';
+import { useContext, useState }     from 'react';
 import { ModalContainer } from '/src/shared/components';
 import { GeneralContext } from '../../store/context';
-import { useForm } from '../../shared/hooks';
-import { registerPost } from '../services';
-import { urlsAPI } from "/src/config/urlsAPI";
+import { useForm }        from '../../shared/hooks';
+import { urlsAPI }        from "/src/config/urlsAPI";
+import { BackendErrors, InputForm }      from './';
+import { isEmail, isOnlyNumbers, isOnlyText } from '../../shared/helpers';
+import { submitRegister } from '../helpers/submitRegister';
+
+const formValidators = {
+    ci   : [ 
+        {
+            validator: ( value ) => value?.length == 10, 
+            message: 'El DNI debe tener 10 caracteres'
+        },
+        {
+            validator: ( value ) => isOnlyNumbers(value), 
+            message: 'El DNI debe contener solo numeros'
+        }
+    ],
+
+    name  : [ 
+        {
+            validator:( value ) =>  isOnlyText(value), 
+            message:'El nombre debe ser solo texto'
+        }
+    ],
+    
+    email : [ 
+        {
+            validator:( value ) => isEmail(value), 
+            message:'Debe ser um email valido ej: user@domain.com' 
+        }
+    ],
+}
 
 export const FormAddProfesor = () => {
 
     const context = useContext( GeneralContext );
-    const [ errorsForm, setErrorsForm ] = useState([]);
+    const [ backendErrors, setBackendErrors ] = useState(null);
 
-    const { ci, name, email, onInputChange, onResetForm } = useForm({
-        ci    :'', 
-        name  : '',
-        email : '',
-    });
+
+    const { 
+        ci, name, email, 
+        formErrors, isFormValid,
+        onInputChange, onResetForm 
+    } = useForm({ci:'', name:'', email:''}, formValidators);
 
     const onSubmit = async( event ) => {
         event.preventDefault();
-        const responsePostProfesor = await registerPost(
-            urlsAPI.postProfesores, 
-            { ci, name, email }
-        );
 
-        const { ok, errors } = responsePostProfesor;
-        console.log( responsePostProfesor );
-
-        if( !ok ) {
-            setErrorsForm( errors ); 
-            return;
-        }
-        
-        context.setOpenModal(false);
-        onResetForm();
-
-        context.setAlert({ 
-            open:true, 
-            message:'✅ Profesor agregado', 
-            type:'success' 
+        const { errors } = await submitRegister({
+            onResetForm, context, isFormValid, 
+            urlAPI: urlsAPI.postProfesores, 
+            registerBody: { ci, name, email }
         });
-        
-        window.location.reload();
+
+        setBackendErrors(errors);
     }
 
     const onCancel = () => {
         context.setOpenModal(false);
-        setErrorsForm([]);
+        setBackendErrors(null);
         onResetForm();
     }
     
@@ -57,50 +72,43 @@ export const FormAddProfesor = () => {
         >
             <form onSubmit={ onSubmit }>
 
-                <div className='form-group mb-3'>
-                    <label htmlFor="">Numero de Cedula: </label>
-                    <input 
-                        className="form-control" 
-                        type="text" 
-                        placeholder="C.I."
-                        name='ci'
-                        value   ={ ci }
-                        onChange={ onInputChange }
-                    />
-                </div>
+                <InputForm 
+                    dataInput = {{
+                        label: 'Numero de cedula:',
+                        placeholder: 'C.I.', 
+                        name: 'ci', 
+                        value: ci,
+                        required: true,
+                        onInputChange: onInputChange, 
+                        errorMessage:formErrors.ci
+                    }}
+                />
 
-                <div className='form-group mb-3'>
-                    <label htmlFor="">Nombre: </label>
-                    <input 
-                        className="form-control" 
-                        type="text" 
-                        placeholder="Nombre"
-                        name='name'
-                        value   ={ name }
-                        onChange={ onInputChange }
-                    />
-                </div>
+                <InputForm 
+                    dataInput = {{
+                        label: 'Nombre:',
+                        placeholder: 'Nombre del profesor', 
+                        name: 'name', 
+                        value: name,
+                        required: true,
+                        onInputChange: onInputChange, 
+                        errorMessage:formErrors.name
+                    }}
+                />
 
-                <div className='form-group mb-3'>
-                    <label htmlFor="">Email: </label>
-                    <input 
-                        className="form-control" 
-                        type="text" 
-                        placeholder="Email"
-                        name='email'
-                        value   ={ email }
-                        onChange={ onInputChange }
-                    />
-                </div>
+                <InputForm 
+                    dataInput = {{
+                        label: 'Email:',
+                        placeholder: 'Email del profesor', 
+                        name: 'email', 
+                        value: email,
+                        required: true,
+                        onInputChange: onInputChange, 
+                        errorMessage:formErrors.email
+                    }}
+                />
 
-                {
-                    (errorsForm?.length > 0) &&
-                    <div className='alert alert-danger'>
-                        <ul>
-                            {  errorsForm?.map( error => <li key={ error }>{ error }</li> ) }
-                        </ul>
-                    </div>
-                }
+                <BackendErrors backendErrors={ backendErrors } />
                 
 
                 <div className="form-group d-flex justify-content-end">
@@ -109,11 +117,15 @@ export const FormAddProfesor = () => {
                         className="btn btn-danger mx-2"
                     >Cancelar</button>
 
-                    <button className="btn btn-success" type='submit'>Guardar</button>
+                    <button
+                        disabled={ !isFormValid }
+                        className="btn btn-success" 
+                        type='submit'
+                    >
+                        Guardar
+                    </button>
                 </div>
             </form>
         </ModalContainer>
-            
-        
     );
 }

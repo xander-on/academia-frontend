@@ -32,18 +32,29 @@ export const useForm = ( initialForm = {}, formValidators = {} ) => {
         setFormState(initialForm);
     }
 
+
     const checkErrors = () => {
         const formErrors = {};
-
-        for (const formField of Object.keys( formValidators )) {
-            const [ fn, errorMessage='Error en este campo' ] = formValidators[ formField ];
-
-            formErrors[`${ formField }`] = 
-                fn( formState[ formField ] ) ? null : errorMessage;
+    
+        for (const formField of Object.keys(formValidators)) {
+            const validations = formValidators[formField];
+    
+            for (
+                const { validator, message = 'Error en este campo'} 
+                of validations
+            ) 
+            {
+                if (!validator(formState[formField])) {
+                    formErrors[formField] = message;
+                    break;
+                } else {
+                    formErrors[formField] = null;
+                }
+            }
         }
-
-        setFormErrors( formErrors );
-    }
+    
+        setFormErrors(formErrors);
+    };
 
     return{
         ...formState,

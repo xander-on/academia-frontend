@@ -1,23 +1,46 @@
 
-import { useContext, useState } from 'react';
-import { ModalContainer }       from '/src/shared/components';
-import { GeneralContext }       from '../../store/context';
-import { useForm }              from '../../shared/hooks';
-import { registerPost } from '../services';
-import { urlsAPI } from '/src/config';
-import { InputForm } from './';
+import { useContext, useState }     from 'react';
+import { ModalContainer } from '/src/shared/components';
+import { GeneralContext } from '../../store/context';
+import { useForm }        from '../../shared/hooks';
+import { urlsAPI }        from '/src/config';
+import { BackendErrors, InputForm }      from './';
+import { submitRegister } from '../helpers';
+
+// si el campo es requerido enviar el prop required en el input
+const formValidators = {
+    codigo   : [ 
+        {
+            validator: ( value ) => value.length >3, 
+            message:'El codigo debe tener al menos 4 '
+        },  
+    ],
+
+    date   : [ 
+        {
+            validator: ( value ) => value.length >0, 
+            message:'La fecha es obligatoria'
+        },  
+    ],
+
+    materia  : [ 
+        {
+            validator: ( value ) => value != '',  
+            message:'La materia es obligatorio'
+        }
+    ],
+    profesor : [ 
+        {
+            validator: ( value ) => value != '',
+            message:'El profesor es obligatorio'
+        } 
+    ],
+}
 
 
 export const FormAddAula = () => {
     const context = useContext( GeneralContext );
-    const [ errorsForm, setErrorsForm ] = useState([]);
-
-    // si el campo es requerido enviar el prop required en el input
-    const formValidators = {
-        codigo   : [ ( value ) => value.length >3, 'El codigo debe tener al menos 4 caracteres' ],
-        materia  : [ ( value ) => value != '',     'La materia es obligatorio' ],
-        profesor : [ ( value ) => value != '',     'El profesor es obligatorio' ],
-    }
+    const [ backendErrors, setBackendErrors ] = useState(null);
     
     const initialForm = {
         codigo: '',
@@ -37,10 +60,8 @@ export const FormAddAula = () => {
     } = useForm(initialForm, formValidators );
 
     const onSubmit = async( event ) => {
-        
         event.preventDefault();
-        console.log(formErrors);
-        if( !isFormValid ) return;
+        
 
         const aulaToPost = { 
             codigo, date, time, theme, 
@@ -48,31 +69,18 @@ export const FormAddAula = () => {
             profesor:{ idProfesor:profesor } 
         }
 
-        const responsePostAula = await registerPost( urlsAPI.postAulas, aulaToPost );
-
-        const { ok, errors } = responsePostAula;
-        console.log( responsePostAula );
-
-        if( !ok ) {
-            setErrorsForm( errors ); 
-            return;
-        }
-        
-        context.setOpenModal(false);
-        onResetForm();
-
-        context.setAlert({ 
-            open:true, 
-            message:'✅ Aula agregada', 
-            type:'success' 
+        const { errors } = await submitRegister({
+            onResetForm, context, isFormValid, 
+            urlAPI: urlsAPI.postAulas, 
+            registerBody: aulaToPost
         });
 
-        window.location.reload();
+        setBackendErrors(errors);
     }
 
     const onCancel = () => {
         context.setOpenModal(false);
-        setErrorsForm([]);
+        setBackendErrors(null);
         onResetForm();
     }
 
@@ -146,7 +154,9 @@ export const FormAddAula = () => {
                         value={materia}
                         onChange={ onInputChange }
                     >
-                        <option disabled value="">--Selecciona una materia--</option>
+                        <option disabled value="">
+                            --Selecciona una materia--
+                        </option>
                         { 
                             context.materias?.map( materia => 
                                 <option 
@@ -167,7 +177,9 @@ export const FormAddAula = () => {
                         value={profesor}
                         onChange={ onInputChange }
                     >
-                        <option value="">--Selecciona un profesor--</option>
+                        <option value="">
+                            --Selecciona un profesor--
+                        </option>
                         { 
                             context.profesores?.map( profesor => 
                                 <option 
@@ -181,6 +193,8 @@ export const FormAddAula = () => {
                     </select>
                 </div>
 
+                <BackendErrors backendErrors={ backendErrors } />
+
 
                 <div className="form-group d-flex justify-content-end">
                     <button 
@@ -189,7 +203,7 @@ export const FormAddAula = () => {
                     >Cancelar</button>
 
                     <button 
-                        // disabled={ !isFormValid }
+                        disabled={ !isFormValid }
                         className="btn btn-success" 
                         type='submit'
                     >Guardar</button>

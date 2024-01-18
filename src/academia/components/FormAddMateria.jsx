@@ -1,41 +1,49 @@
-import { useContext, useState } from 'react';
+import { useContext, useState }     from 'react';
 import { ModalContainer } from '/src/shared/components';
 import { GeneralContext } from '../../store/context';
-import { useForm } from '../../shared/hooks';
-import { registerPost } from '../services';
-import { urlsAPI } from "/src/config/urlsAPI";
+import { useForm }        from '../../shared/hooks';
+import { urlsAPI }        from "/src/config/urlsAPI";
+import { InputForm }      from './InputForm';
+import { submitRegister } from '../helpers/submitRegister';
+import { BackendErrors } from './';
 
+
+const formValidations = {
+    name : [ 
+        {
+            validator:( value ) => value.length > 3, 
+            message: 'Debe contener 4 o mas caracteres'
+        }
+    ],
+}
 
 export const FormAddMateria = () => {
 
     const context = useContext( GeneralContext );
-    const [ errorsForm, setErrorsForm ] = useState([]);
+    const [ backendErrors, setBackendErrors ] = useState(null);
 
-    const formValidations = {
-        name   : [ ( value ) => value.length >= 3, 'El nombre es obligatorio' ],
-    }
-
-    const { name, onInputChange, onResetForm, isFormValid } = useForm({name : ''}, formValidations );
+    const { 
+        name, 
+        onInputChange, 
+        onResetForm, 
+        isFormValid , formErrors
+    } = useForm({name : ''}, formValidations );
 
     const onSubmit = async( event ) => {
         event.preventDefault();
-        await registerPost(urlsAPI.postMaterias, { name });
 
-        context.setOpenModal(false);
-        onResetForm();
-
-        context.setAlert({ 
-            open:true, 
-            message:'✅ Materia agregada', 
-            type:'success' 
+        const { errors } = await submitRegister({
+            onResetForm, context, isFormValid, 
+            urlAPI: urlsAPI.postMaterias, 
+            registerBody: { name }
         });
 
-        window.location.reload();
+        setBackendErrors(errors);
     }
 
     const onCancel = () => {
         context.setOpenModal(false);
-        setErrorsForm([]);
+        setBackendErrors(null);
         onResetForm();
     }
     
@@ -46,18 +54,20 @@ export const FormAddMateria = () => {
             title     = {'Agrega una nueva Materia'}
         >
             <form onSubmit={ onSubmit }>
-                <div className='form-group mb-3'>
-                    <label htmlFor="">Nombre: </label>
-                    <input 
-                        className="form-control" 
-                        type="text" 
-                        placeholder="Nombre"
-                        name='name'
-                        value   ={ name }
-                        onChange={ onInputChange }
-                    />
-                </div>
 
+                <InputForm 
+                    dataInput = {{
+                        label: 'Nombre:',
+                        placeholder: 'Nombre de la materia', 
+                        name: 'name', 
+                        value: name,
+                        required: true,
+                        onInputChange: onInputChange, 
+                        errorMessage:formErrors.name
+                    }}
+                />
+
+                <BackendErrors backendErrors={ backendErrors }/>
 
                 <div className="form-group d-flex justify-content-end">
                     <button 

@@ -32,7 +32,7 @@ export const useFetch = ( url ) => {
                 isLoading: false,
                 hasError: error.message || 'Failed to fetch data',
             });
-            console.log( error );
+            // console.log( error );
         }
         
     }
