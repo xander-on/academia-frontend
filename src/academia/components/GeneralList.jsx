@@ -1,6 +1,6 @@
 import { cloneElement, useContext } from "react";
 import { GeneralContext } from "../../store/context";
-import { EmptyResults } from "../../shared/components";
+import { EmptyResults, Loader } from "../../shared/components";
 import { Link }         from "react-router-dom";
 
 export const GeneralList = ({ infoList, registros, children }) => {
@@ -17,8 +17,6 @@ export const GeneralList = ({ infoList, registros, children }) => {
                 Back to Menu
             </Link>
 
-            { !registros && <p>Cargando...</p> }
-
             <div className="card">
                 <div className="card-header">
                     <div className="d-flex justify-content-between">
@@ -33,6 +31,8 @@ export const GeneralList = ({ infoList, registros, children }) => {
                 </div>
                 
                 <div className="card-body"> 
+                    { !registros && <Loader /> }
+
                     {
                         registros &&(registros?.length === 0)
                             ? <EmptyResults message="No hay materias registradas"/>

@@ -30,11 +30,11 @@ export const GeneralProvider = ({ children }) => {
     //cargar data materias backend
     const { 
         data:dataMaterias, 
-        hasError:hasErrorMaterias 
+        hasError:hasErrorMaterias,
+        isLoading:isLoadingMaterias 
     } = useFetch(urlsAPI.getMaterias);
 
     const [ materias, setMaterias ] = useState([]);
-
 
     useEffect(() => {
         if( hasErrorMaterias ) setAlert( alertServerError );    
@@ -81,7 +81,8 @@ export const GeneralProvider = ({ children }) => {
             materias, setMaterias,
             profesores, setProfesores,
             aulas, setAulas,
-            urlsAPI
+            urlsAPI,
+            isLoadingMaterias
         }}>
             { children }
         </GeneralContext.Provider>
