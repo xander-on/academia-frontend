@@ -1,9 +1,11 @@
-import { aulaMapper } from "../mappers";
+import { useContext } from "react";
 import { GeneralDetailsPage } from "./";
+import { GeneralContext } from "../../store/context";
 
 export const AulaDetailsPage = () => {
     return (
         <GeneralDetailsPage 
+            //todo quitar url llamar info del context no peticion
             url="http://localhost:8080/api-academia/v1/aulas"
         >
             <AulaCardDetails />
@@ -14,9 +16,15 @@ export const AulaDetailsPage = () => {
 
 export const AulaCardDetails = ({ info:aula }) => {
 
+    const context = useContext( GeneralContext );
+
     if( !aula ) return;
 
-    const { id, code, date, time, theme, course, teacher } = aulaMapper(aula);
+    const aulaContextSearched = context.aulas.find( (aulaContext ) => aula.id === aulaContext.id );
+
+    if(!aulaContextSearched) return;
+
+    const { id, code, date, time, theme, course, teacher } = aulaContextSearched;
 
     const fieldsCard = [
         { label: 'ID',        value: id },
