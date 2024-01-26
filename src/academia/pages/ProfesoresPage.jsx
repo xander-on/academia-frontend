@@ -1,10 +1,11 @@
 import { useContext }      from "react";
 import { GeneralLayout }   from "../../shared/Layout";
-import { GeneralList }  from "../components";
+import { GeneralList }     from "../components";
 import { FormAddProfesor } from "../components/FormAddProfesor";
 import { GeneralContext }  from "../../store/context";
-import { deleteProfesor } from "../services";
-import { Link } from "react-router-dom";
+import { deleteRegister }  from "../services";
+import { Link }            from "react-router-dom";
+import { urlsAPI } from "../../config/urlsAPI";
 
 
 
@@ -36,7 +37,8 @@ const ProfesorItem = ({ registro }) => {
     const { id, name, email } = registro;
 
     const onDelete = () => {
-        deleteProfesor( id );
+        const urlDeleteProfesor = urlsAPI.deleteProfesores + `/${id}`
+        deleteRegister( urlDeleteProfesor );
         window.location.reload();
     }
 
@@ -47,7 +49,9 @@ const ProfesorItem = ({ registro }) => {
             <td>{email}</td>
             
             <td>
-                <Link to={`/profesores/${id}`} className="btn btn-primary my-2">Ver más</Link>
+                <Link to={`/profesores/${id}`} className="btn btn-primary my-2">
+                    Ver más
+                </Link>
                 <button onClick={ onDelete } className="btn btn-danger mx-2">
                     <i className="bi bi-trash3-fill"></i>
                 </button>

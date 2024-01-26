@@ -2,8 +2,9 @@ import { useContext }               from "react";
 import { GeneralLayout }            from "../../shared/Layout";
 import { FormAddAula, GeneralList } from "../components";
 import { GeneralContext } from "../../store/context";
-import { deleteAula }     from "../services";
+import { deleteRegister } from "../services";
 import { Link }           from "react-router-dom";
+import { urlsAPI }        from "../../config/urlsAPI";
 
 export const AulasPage = () => {
 
@@ -31,7 +32,7 @@ const AulaItem = ({ registro }) => {
     const { id, code, date, time, course, teacher } = registro;
 
     const onDelete = () => {
-        deleteAula( id );
+        deleteRegister(`${urlsAPI.deleteAulas}/${id}` );
         window.location.reload();
     }
     return (
@@ -44,7 +45,9 @@ const AulaItem = ({ registro }) => {
                 <td>{teacher?.name}</td>
                 
                 <td>
-                    <Link to={`/aulas/${id}`} className="btn btn-primary my-2">Ver más</Link>
+                    <Link to={`/aulas/${id}`} className="btn btn-primary my-2">
+                        Ver más
+                    </Link>
                     <button onClick={ onDelete } className="btn btn-danger mx-2">
                         <i className="bi bi-trash3-fill"></i>
                     </button>

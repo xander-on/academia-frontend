@@ -1,7 +1,7 @@
 import { cloneElement, useContext } from "react";
-import { GeneralContext } from "../../store/context";
+import { GeneralContext }       from "../../store/context";
 import { EmptyResults, Loader } from "../../shared/components";
-import { Link }         from "react-router-dom";
+import { Link }                 from "react-router-dom";
 
 export const GeneralList = ({ infoList, registros, children }) => {
 

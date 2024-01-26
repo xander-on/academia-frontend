@@ -1,4 +1,4 @@
-import { registerPost }   from '../services';
+import { postRegister }   from '../services';
 
 
 export const submitRegister = async(
@@ -8,7 +8,7 @@ export const submitRegister = async(
     if( !isFormValid ) return{errors:null};
     //todo lanzar errores en inputs
 
-    const responsePost = await registerPost( urlAPI, registerBody );
+    const responsePost = await postRegister( urlAPI, registerBody );
 
     // console.log( responsePost );
     const { ok } = responsePost;

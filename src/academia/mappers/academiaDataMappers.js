@@ -5,7 +5,7 @@ export const materiaMapper = ( materia ) =>{
     if ( !materia ) return;
     
     const materiaMapped = {
-        id  : materia.idMateria,
+        id  : materia.id,
         name: materia.name
     }
 
@@ -18,7 +18,7 @@ export const profesorMapper = ( profesor ) =>{
     if ( !profesor ) return;
     
     const profesorMapped = {
-        id    : profesor.idProfesor,
+        id    : profesor.id,
         dni   : profesor.ci,
         name  : profesor.name,
         email : profesor.email,
@@ -31,9 +31,11 @@ export const profesorMapper = ( profesor ) =>{
 
 export const aulaMapper = ( aula ) =>{
     if ( !aula ) return;
-    
+
+
+
     const aulaMapped = {
-        id     : aula.idAula,
+        id     : aula.id,
         code   : aula.codigo,
         date   : aula.date,
         time   : aula.time,
