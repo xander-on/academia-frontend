@@ -69,8 +69,14 @@ export const GeneralProvider = ({ children }) => {
     useEffect(() => {
         if( hasErrorAulas ) setAlert( alertServerError );
 
-        const dataAulasMapped = dataAulas?.results.map(aulaMapper);
-        setAulas( dataAulasMapped );
+        const fetchData = async () => {
+            if (dataAulas && dataAulas.results){
+                const dataAulasMapped = await Promise.all(dataAulas.results.map(aulaMapper));
+                setAulas(dataAulasMapped);
+            }
+        };
+    
+        fetchData();
     }, [dataAulas]);
 
     

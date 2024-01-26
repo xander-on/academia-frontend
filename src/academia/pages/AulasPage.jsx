@@ -41,8 +41,8 @@ const AulaItem = ({ registro }) => {
                 <td>{code}</td>
                 <td>{date}</td>
                 <td>{time}</td>
-                <td>{course?.name}</td>
-                <td>{teacher?.name}</td>
+                <td>{course}</td>
+                <td>{teacher}</td>
                 
                 <td>
                     <Link to={`/aulas/${id}`} className="btn btn-primary my-2">

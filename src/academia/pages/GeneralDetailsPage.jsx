@@ -12,6 +12,7 @@ export const GeneralDetailsPage = ({ url='', children }) => {
     const navigate = useNavigate();
     const { data, isLoading } = useFetch(`${url}/${id}`);
     const info = data?.results[0];
+    console.log( data )
     
     const navigateBack = () => navigate(-1);
 

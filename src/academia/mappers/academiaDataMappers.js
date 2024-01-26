@@ -1,3 +1,5 @@
+// import { urlsAPI } from "../../config/urlsAPI";
+import { getRegisterById } from "../services";
 
 
 export const materiaMapper = ( materia ) =>{
@@ -29,10 +31,14 @@ export const profesorMapper = ( profesor ) =>{
 }
 
 
-export const aulaMapper = ( aula ) =>{
+export const aulaMapper = async( aula ) =>{
     if ( !aula ) return;
 
+    const { ok:okMateria, results:materia } = await getRegisterById(aula?.materia);
+    const { ok:okProfesor, results:profesor } = await getRegisterById(aula?.profesor);
 
+
+    if( !okMateria && !okProfesor) return;
 
     const aulaMapped = {
         id     : aula.id,
@@ -40,8 +46,8 @@ export const aulaMapper = ( aula ) =>{
         date   : aula.date,
         time   : aula.time,
         theme  : aula.theme,
-        course : aula.materia,
-        teacher: aula.profesor
+        course : materia?.name,
+        teacher: profesor.name
     }
 
     return aulaMapped;

@@ -5,9 +5,9 @@ export const getRegisterById = async ( urlId ) => {
         const data = await resp.json();
         
         return {
-            ok: true,
-            response: data
-        }
+            ok      : true,
+            results : data?.results[0] || []
+        };
 
     }catch( error ){
         return { ok:false, errorMessage: error.message }

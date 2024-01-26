@@ -40,7 +40,9 @@ export const GeneralList = ({ infoList, registros, children }) => {
                                 <thead>
                                     <tr className="border-bottom">
                                         {
-                                            listHeaders?.map( header => <th key={header}>{ header }</th>)
+                                            listHeaders?.map( header => 
+                                                <th key={header}>{ header }</th>
+                                            )
                                         }
                                         <th>Actions</th>
                                     </tr>

@@ -24,8 +24,8 @@ export const AulaCardDetails = ({ info:aula }) => {
         { label: 'Fecha',     value: date },
         { label: 'Hora',      value: time },
         { label: 'Tema',      value: theme },
-        { label: 'Materia',   value: course?.name },
-        { label: 'Profesor',  value: teacher?.name },
+        { label: 'Materia',   value: course },
+        { label: 'Profesor',  value: teacher },
     ]
 
     return (
