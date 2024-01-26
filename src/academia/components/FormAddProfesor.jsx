@@ -122,6 +122,8 @@ export const FormAddProfesor = () => {
                         className="btn btn-success" 
                         type='submit'
                     >
+                        <i className="bi bi-floppy-fill"/>
+                        <span className="mx-1"/>
                         Guardar
                     </button>
                 </div>

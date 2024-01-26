@@ -206,7 +206,11 @@ export const FormAddAula = () => {
                         disabled={ !isFormValid }
                         className="btn btn-success" 
                         type='submit'
-                    >Guardar</button>
+                    >
+                        <i className="bi bi-floppy-fill"/>
+                        <span className="mx-1"/>
+                        Guardar
+                    </button>
                 </div>
 
             </form>

@@ -1,4 +1,3 @@
-// import { urlsAPI } from "../../config/urlsAPI";
 import { getRegisterById } from "../services";
 
 

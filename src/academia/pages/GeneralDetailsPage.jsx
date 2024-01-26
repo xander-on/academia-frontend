@@ -1,18 +1,10 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useFetch }      from "../../shared/hooks";
+import { Link, useNavigate } from "react-router-dom";
 import { GeneralLayout } from "../../shared/Layout";
-import { EmptyResults }  from "../../shared/components";
-import { cloneElement }  from "react";
 
 
+export const GeneralDetailsPage = ({ children }) => {
 
-export const GeneralDetailsPage = ({ url='', children }) => {
-
-    const { id }   = useParams();
     const navigate = useNavigate();
-    const { data, isLoading } = useFetch(`${url}/${id}`);
-    const info = data?.results[0];
-    
     const navigateBack = () => navigate(-1);
 
     return (
@@ -23,15 +15,7 @@ export const GeneralDetailsPage = ({ url='', children }) => {
             </Link>
 
             <div className="col-8 offset-2">
-
-                { isLoading && <div>Loading...</div> }
-
-                { 
-                    !isLoading && ( data?.results.length === 0 ) 
-                        ? (<EmptyResults message="No se encontro un profesor con ese ID"/>)
-                        :  ( cloneElement( children,  { info } ) )
-                }
-                
+                { children }
             </div>
         </GeneralLayout>
     );

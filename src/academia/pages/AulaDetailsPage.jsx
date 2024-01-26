@@ -1,30 +1,30 @@
 import { useContext } from "react";
 import { GeneralDetailsPage } from "./";
 import { GeneralContext } from "../../store/context";
+import { searchDataById } from "../helpers";
+import { useParams }      from "react-router-dom";
+import { EmptyResults }   from "../../shared/components";
 
 export const AulaDetailsPage = () => {
+    const { id }   = useParams();
+    const context  = useContext( GeneralContext );
+    const aula     = searchDataById( context.aulas, id );
+
     return (
-        <GeneralDetailsPage 
-            //todo quitar url llamar info del context no peticion
-            url="http://localhost:8080/api-academia/v1/aulas"
-        >
-            <AulaCardDetails />
+        <GeneralDetailsPage>
+            { !aula && 
+                <EmptyResults message="No se encontro un aula con ese ID"/>
+            }
+            <AulaCardDetails aula={aula}/>
         </GeneralDetailsPage> 
     );
 }
 
 
-export const AulaCardDetails = ({ info:aula }) => {
-
-    const context = useContext( GeneralContext );
+export const AulaCardDetails = ({ aula }) => {
 
     if( !aula ) return;
-
-    const aulaContextSearched = context.aulas.find( (aulaContext ) => aula.id === aulaContext.id );
-
-    if(!aulaContextSearched) return;
-
-    const { id, code, date, time, theme, course, teacher } = aulaContextSearched;
+    const { id, code, date, time, theme, course, teacher } = aula;
 
     const fieldsCard = [
         { label: 'ID',        value: id },

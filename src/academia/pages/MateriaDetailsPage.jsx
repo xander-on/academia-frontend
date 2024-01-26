@@ -1,22 +1,31 @@
-import { materiaMapper } from "../mappers";
+import { useContext } from "react";
 import { GeneralDetailsPage } from "./GeneralDetailsPage";
+import { GeneralContext } from "../../store/context";
+import { useParams } from "react-router-dom";
+import { searchDataById } from "../helpers";
+import { EmptyResults } from "../../shared/components";
 
 
 export const MateriaDetailsPage = () => {
+    const { id }   = useParams();
+    const context  = useContext( GeneralContext );
+    const materia = searchDataById( context.materias, id );
+
     return (
-        <GeneralDetailsPage 
-            url="http://localhost:8080/api-academia/v1/materias"
-        >
-            <MateriaDetailsCard />
+        <GeneralDetailsPage>
+            { !materia && 
+                <EmptyResults message="No se encontro una materia con ese ID"/>
+            }
+            <MateriaDetailsCard materia={materia}/>
         </GeneralDetailsPage> 
     );
 }
 
 
-export const MateriaDetailsCard = ({ info: materia }) => {
+export const MateriaDetailsCard = ({ materia }) => {
 
     if( !materia ) return;
-    const { id, name } = materiaMapper( materia );
+    const { id, name } = materia;
 
     const fieldsCard = [
         { label: 'ID',     value: id },

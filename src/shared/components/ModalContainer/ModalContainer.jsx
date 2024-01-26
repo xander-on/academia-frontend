@@ -10,11 +10,9 @@ export const ModalContainer = ({
 }) => {
     
     const modalRoot = document.getElementById('modal');
-
     const context = useContext( GeneralContext );
 
     const onCancel = () => {
-        // setNewTodoValue('');
         context.setOpenModal(false);
     };
 
@@ -28,7 +26,7 @@ export const ModalContainer = ({
                 <span 
                     className='btn-close-modal'
                     onClick={onCancel}
-                > x </span>
+                > <i className="bi bi-x"></i> </span>
 
                 <h2 className='title mb-3'> {title || 'No title'} </h2>
 

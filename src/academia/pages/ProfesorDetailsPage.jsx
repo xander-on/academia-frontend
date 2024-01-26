@@ -1,21 +1,30 @@
-import { profesorMapper } from "../mappers";
+import { useContext }         from "react";
+import { GeneralContext }     from "../../store/context";
 import { GeneralDetailsPage } from "./GeneralDetailsPage";
+import { searchDataById }     from "../helpers";
+import { useParams }          from "react-router-dom";
+import { EmptyResults }       from "../../shared/components";
 
 export const ProfesorDetailsPage = () => {
+    const { id }   = useParams();
+    const context  = useContext( GeneralContext );
+    const profesor = searchDataById( context.profesores, id );
+
     return (
-        <GeneralDetailsPage 
-            url="http://localhost:8080/api-academia/v1/profesores"
-        >
-            <ProfesorDetailsCard />
+        <GeneralDetailsPage>
+            { !profesor && 
+                <EmptyResults message="No se encontro un profesor con ese ID"/>
+            }
+            <ProfesorDetailsCard profesor={profesor}/>
         </GeneralDetailsPage>
     );
 }
 
 
-export const ProfesorDetailsCard = ({ info:profesor }) => {
+export const ProfesorDetailsCard = ({profesor}) => {
 
-    if( !profesor ) return;
-    const { id, dni, name, photo } = profesorMapper(profesor);
+    if(!profesor) return
+    const { id, dni, name, photo } = profesor;
 
     const fieldsCard = [
         { label: 'ID',     value: id },
@@ -31,7 +40,11 @@ export const ProfesorDetailsCard = ({ info:profesor }) => {
             <div className="card-body">
                 <div className="row">
                     <div className="col-4">
-                        <img src={ photo? photo : '/src/assets/images/no-avatar.png' } alt="" className="w-100"/>
+                        <img 
+                            src={ photo ?photo :'/src/assets/images/no-avatar.png' } 
+                            alt="" 
+                            className="w-100"
+                        />
                     </div>
                     <div className="col-8 d-flex flex-column justify-content-center px-5">
                         {
